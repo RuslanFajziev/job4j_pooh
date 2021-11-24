@@ -25,7 +25,8 @@ public class Req {
         String reqType1 = "POST";
         String reqType2 = "GET";
         String markerStop = "end";
-        content += markerStop;
+        String ls = System.lineSeparator();
+        content = content.concat(ls).concat(markerStop);
 
         HashMap<String, String> mapParam = new HashMap();
         InputStream targetStream = new ByteArrayInputStream(content.getBytes());
@@ -61,7 +62,6 @@ public class Req {
                 || (param.isEmpty() && httpRequestType.equals(reqType1))) {
             throw new IllegalArgumentException("one of the parameters is empty");
         }
-
         return new Req(httpRequestType, poohMode, sourceName, param);
     }
 
