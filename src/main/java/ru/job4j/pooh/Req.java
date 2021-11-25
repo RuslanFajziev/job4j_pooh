@@ -58,10 +58,10 @@ public class Req {
             param = strArr2[3];
         }
 
-        if (httpRequestType.isEmpty() || poohMode.isEmpty() || sourceName.isEmpty()
-                || (param.isEmpty() && httpRequestType.equals(reqType1))) {
-            throw new IllegalArgumentException("one of the parameters is empty");
-        }
+//        if (httpRequestType.isEmpty() || poohMode.isEmpty() || sourceName.isEmpty()
+//                || (param.isEmpty() && httpRequestType.equals(reqType1))) {
+//            throw new IllegalArgumentException("one of the parameters is empty");
+//        }
         return new Req(httpRequestType, poohMode, sourceName, param);
     }
 

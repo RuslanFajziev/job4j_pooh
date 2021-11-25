@@ -11,11 +11,9 @@ public class QueueServiceTest {
     public void whenPostThenGetQueue() {
         QueueService queueService = new QueueService();
         String paramForPostMethod = "temperature=18";
-        /* Добавляем данные в очередь weather. Режим queue */
         queueService.process(
                 new Req("POST", "queue", "weather", paramForPostMethod)
         );
-        /* Забираем данные из очереди weather. Режим queue */
         Resp result = queueService.process(
                 new Req("GET", "queue", "weather", null)
         );
@@ -26,11 +24,9 @@ public class QueueServiceTest {
     public void whenPostThenGetQueueNotFound() {
         QueueService queueService = new QueueService();
         String paramForPostMethod = "temperature=18";
-        /* Добавляем данные в очередь weather. Режим queue */
         queueService.process(
                 new Req("POST", "queue", "weather", paramForPostMethod)
         );
-        /* Забираем данные из очереди weather. Режим queue */
         Resp result = queueService.process(
                 new Req("GET", "queue", "weather2", null)
         );
@@ -42,14 +38,12 @@ public class QueueServiceTest {
         QueueService queueService = new QueueService();
         String paramForPostMethod1 = "temperature=18";
         String paramForPostMethod2 = "temperature=20";
-        /* Добавляем данные в очередь weather. Режим queue */
         queueService.process(
                 new Req("POST", "queue", "weather", paramForPostMethod1)
         );
         queueService.process(
                 new Req("POST", "queue", "weather", paramForPostMethod2)
         );
-        /* Забираем данные из очереди weather. Режим queue */
         Resp result1 = queueService.process(
                 new Req("GET", "queue", "weather", null)
         );
@@ -65,14 +59,12 @@ public class QueueServiceTest {
         QueueService queueService = new QueueService();
         String paramForPostMethod1 = "temperature=18";
         String paramForPostMethod2 = "temperature=20";
-        /* Добавляем данные в очередь weather. Режим queue */
         queueService.process(
                 new Req("POST", "queue", "weather1", paramForPostMethod1)
         );
         queueService.process(
                 new Req("POST", "queue", "weather2", paramForPostMethod2)
         );
-        /* Забираем данные из очереди weather. Режим queue */
         Resp result1 = queueService.process(
                 new Req("GET", "queue", "weather1", null)
         );

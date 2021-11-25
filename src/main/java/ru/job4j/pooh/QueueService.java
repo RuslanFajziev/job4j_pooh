@@ -20,7 +20,7 @@ public class QueueService implements Service {
             }
             return new Resp(req.getParam(), "200 OK\r\n\r\n");
         }
-        String text;
+
         if (req.httpRequestType().equals("GET")) {
             if (queue.containsKey(sourceName)) {
                 ConcurrentLinkedQueue<String> linkedQueue = queue.get(sourceName);
@@ -29,6 +29,7 @@ public class QueueService implements Service {
                 }
             }
         }
+
         return new Resp("", "204 No Content\r\n\r\n");
     }
 }
