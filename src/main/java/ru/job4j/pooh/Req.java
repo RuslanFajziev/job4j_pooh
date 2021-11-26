@@ -26,7 +26,7 @@ public class Req {
         String reqType2 = "GET";
         String markerStop = "end";
         String ls = System.lineSeparator();
-        content = content.concat(ls).concat(markerStop);
+        content = content.concat(markerStop);
 
         HashMap<String, String> mapParam = new HashMap();
         InputStream targetStream = new ByteArrayInputStream(content.getBytes());
