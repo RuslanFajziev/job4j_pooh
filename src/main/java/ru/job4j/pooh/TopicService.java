@@ -11,15 +11,16 @@ public class TopicService implements Service {
     public Resp process(Req req) {
         String sourceName = req.getSourceName();
         String param = req.getParam();
+        String prefSourceName = sourceName.concat("_");
 
-        if (req.httpRequestType().equals("POST") && currentKeyQueue.contains(sourceName)) {
+        if (req.httpRequestType().equals("POST") && currentKeyQueue.contains(prefSourceName)) {
                 ConcurrentLinkedQueue<String> linkedQueue = queue.get(currentKeyQueue);
                 linkedQueue.add(param);
                 return new Resp(param, "200 OK\r\n\r\n");
         }
 
         if (req.httpRequestType().equals("GET")) {
-            String keyQueue = sourceName + param;
+            String keyQueue = prefSourceName.concat(param);
             if (queue.containsKey(keyQueue)) {
                 ConcurrentLinkedQueue<String> linkedQueue = queue.get(keyQueue);
                 if (!linkedQueue.isEmpty()) {

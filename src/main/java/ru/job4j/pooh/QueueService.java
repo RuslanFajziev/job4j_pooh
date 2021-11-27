@@ -9,16 +9,17 @@ public class QueueService implements Service {
     @Override
     public Resp process(Req req) {
         String sourceName = req.getSourceName();
+        String param = req.getParam();
         if (req.httpRequestType().equals("POST")) {
             if (queue.containsKey(sourceName)) {
                 ConcurrentLinkedQueue<String> linkedQueue = queue.get(sourceName);
-                linkedQueue.add(req.getParam());
+                linkedQueue.add(param);
             } else {
                 ConcurrentLinkedQueue<String> linkedQueue = new ConcurrentLinkedQueue<>();
-                linkedQueue.add(req.getParam());
+                linkedQueue.add(param);
                 queue.put(sourceName, linkedQueue);
             }
-            return new Resp(req.getParam(), "200 OK\r\n\r\n");
+            return new Resp(param, "200 OK\r\n\r\n");
         }
 
         if (req.httpRequestType().equals("GET")) {
