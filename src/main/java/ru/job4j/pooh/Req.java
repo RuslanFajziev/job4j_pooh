@@ -25,7 +25,6 @@ public class Req {
         String reqType1 = "POST";
         String reqType2 = "GET";
         String markerStop = "end";
-        String ls = System.lineSeparator();
         content = content.concat(markerStop);
 
         HashMap<String, String> mapParam = new HashMap();
