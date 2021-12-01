@@ -33,11 +33,13 @@ public class Req {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(targetStream))) {
             String str = in.readLine();
             while (!str.contains(markerStop)) {
-                String[] strArr = str.split(" ");
-                if (strArr.length > 1) {
-                    mapParam.put(strArr[0], strArr[1]);
-                } else if (strArr.length == 1 && !strArr[0].isEmpty()) {
-                    param = strArr[0];
+                if (!str.isEmpty()) {
+                    String[] strArr = str.split(" ");
+                    if (strArr.length > 1) {
+                        mapParam.put(strArr[0], strArr[1]);
+                    } else if (strArr.length == 1) {
+                        param = strArr[0];
+                    }
                 }
                 str = in.readLine();
             }
