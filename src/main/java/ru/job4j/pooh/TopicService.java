@@ -4,38 +4,45 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TopicService implements Service {
-    private final ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> queue = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>>> queue = new ConcurrentHashMap<>();
 
     @Override
     public Resp process(Req req) {
-        String sourceName = req.getSourceName();
-        String param = req.getParam();
-        String prefSourceName = sourceName.concat("_");
-        var outputPost = false;
-
+        String sourceName = req.getSourceName(); //weather
+        String param = req.getParam(); //rus
         if (req.httpRequestType().equals("POST")) {
-            var keysSet = queue.keySet();
-            for (var key : keysSet) {
-                if (key.contains(prefSourceName)) {
-                    queue.get(key).add(param);
-                    outputPost = true;
-                }
+            var sourceNameQueue = queue.get(sourceName);
+            if (sourceNameQueue == null) {
+                return new Resp("", "204 No Content");
             }
-            if (outputPost) {
-                return new Resp(param, "200 OK\r\n\r\n");
+            for (var sourName : sourceNameQueue.values()) {
+                sourName.offer(param);
             }
+            return new Resp(param, "200 OK");
         }
 
         if (req.httpRequestType().equals("GET")) {
-            String keyQueue = prefSourceName.concat(param);
-            ConcurrentLinkedQueue<String> linkedQueue = queue.get(keyQueue);
-            if (linkedQueue != null && !linkedQueue.isEmpty()) {
-                return new Resp(linkedQueue.poll(), "200 OK\r\n\r\n");
+            var sourceNameQueue = queue.get(sourceName);
+            if (sourceNameQueue == null) {
+                ConcurrentLinkedQueue<String> linkedQueue = new ConcurrentLinkedQueue<>();
+                sourceNameQueue = new ConcurrentHashMap<>();
+                sourceNameQueue.putIfAbsent(param, linkedQueue);
+                queue.putIfAbsent(sourceName, sourceNameQueue);
+                return new Resp("", "204 No Content");
             } else {
-                linkedQueue = new ConcurrentLinkedQueue<>();
-                queue.putIfAbsent(keyQueue, linkedQueue);
+                var data = sourceNameQueue.get(param);
+                if (data != null) {
+                    if (!data.isEmpty()) {
+                        return new Resp(data.poll(), "200 OK");
+                    }
+                } else {
+                    ConcurrentLinkedQueue<String> linkedQueue = new ConcurrentLinkedQueue<>();
+                    sourceNameQueue.putIfAbsent(param, linkedQueue);
+                }
+                return new Resp("", "204 No Content");
             }
+
         }
-        return new Resp("", "204 No Content\r\n\r\n");
+        return new Resp("", "204 No Content");
     }
 }
