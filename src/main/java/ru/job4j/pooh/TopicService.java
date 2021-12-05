@@ -8,8 +8,8 @@ public class TopicService implements Service {
 
     @Override
     public Resp process(Req req) {
-        String sourceName = req.getSourceName(); //weather
-        String param = req.getParam(); //rus
+        String sourceName = req.getSourceName();
+        String param = req.getParam();
         if (req.httpRequestType().equals("POST")) {
             var sourceNameQueue = queue.get(sourceName);
             if (sourceNameQueue == null) {
